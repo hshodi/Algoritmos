@@ -13,65 +13,75 @@ void swap(int *a, int *b){
 	
 }
 
-void merging(int *a, int *b, int low, int mid, int high) {
-   int l1, l2, i;
+void shell_sort (int *a, int n) {
+    int h, i, j, t;
+    for (h = n; h /= 2;) {
+        for (i = h; i < n; i++) {
+            t = a[i];
+            for (j = i; j >= h && t < a[j - h]; j -= h) {
+                a[j] = a[j - h];
+            }
+            a[j] = t;
+        }
+    }
+}
 
-   for(l1 = low, l2 = mid + 1, i = low; l1 <= mid && l2 <= high; i++) {
-      if(a[l1] <= a[l2])
-         b[i] = a[l1++];
-      else
-         b[i] = a[l2++];
+
+int separa (int v[], int p, int r) 
+{
+   int c = v[p], i = p+1, j = r, t;         // 1
+   while (1) {                              // 2
+      while (i <= r && v[i] <= c) ++i;      // 3
+      while (c < v[j]) --j;                 // 4
+      if (i >= j) break;                    // 5
+      t = v[i], v[i] = v[j], v[j] = t;      // 6
+      ++i; --j;                             // 7
+   }                                        // 8
+   v[p] = v[j], v[j] = c;                   // 9
+   return j;                                // 10
+}
+
+
+void 
+quicksort (int v[], int p, int r)
+{
+   int j;                         // 1
+   if (p < r) {                   // 2
+      j = separa (v, p, r);       // 3
+      quicksort (v, p, j-1);      // 4
+      quicksort (v, j+1, r);      // 5
    }
-
-   while(l1 <= mid)    
-      b[i++] = a[l1++];
-
-   while(l2 <= high)   
-      b[i++] = a[l2++];
-
-   for(i = low; i <= high; i++)
-      a[i] = b[i];
 }
 
-void mergeSort(int *a, int *b, int low, int high) {
-   int mid;
-   
-   if(low < high) {
-      mid = (low + high) / 2;
-      mergeSort(a, b, low, mid);
-      mergeSort(a, b, mid+1, high);
-      merging(a, b, low, mid, high);
-   }else { 
-      return;
-   }   
+static void 
+intercala1 (int p, int q, int r, int v[]) 
+{
+   int i, j, k, *w;                        //  1
+   w = mallocc ((r-p) * sizeof (int));     //  2
+   i = p; j = q;                           //  3
+   k = 0;                                  //  4
+
+   while (i < q && j < r) {                //  5
+      if (v[i] <= v[j])  w[k++] = v[i++];  //  6
+      else  w[k++] = v[j++];               //  7
+   }                                       //  8
+   while (i < q)  w[k++] = v[i++];         //  9
+   while (j < r)  w[k++] = v[j++];         // 10
+   for (i = p; i < r; ++i)  v[i] = w[i-p]; // 11
+   free (w);                               // 12
 }
 
-void quick_sort(int arr[],int low,int high){
-	 int pivot,j,temp,i;
-	 if(low<high){
-		  pivot = low;
-		  i = low;
-		  j = high;
-		 
-			while(i<j){
-			   	while((arr[i]<=arr[pivot])&&(i<high)){
-			  		i++;
-			    }
-			 
-			   	while(arr[j]>arr[pivot]){
-			   		j--;
-			    }
-			 
-			   	if(i<j){ 
-				    swap(&arr[i], &arr[j]);
-				}
-		}
-		 
-		  swap(&arr[pivot], &arr[j]);
-		  quick_sort(arr,low,j-1);
-		  quick_sort(arr,j+1,high);
-	 }
+void
+mergesort (int p, int r, int v[])
+{
+   if (p < r-1) {                 // 1
+      int q = (p + r)/2;          // 2
+      mergesort (p, q, v);        // 3
+      mergesort (q, r, v);        // 4
+      intercala (p, q, r, v);     // 5
+   }
 }
+
 
 void selectionSort(int arr[], int n)
 {
@@ -90,6 +100,65 @@ void selectionSort(int arr[], int n)
         swap(&arr[min_idx], &arr[i]);
     }
     //http://quiz.geeksforgeeks.org/selection-sort/
+}
+
+int quick_part(int arr[], int l, int h)
+{
+    int x = arr[h];
+    int i = (l - 1);
+ 	int j;
+    for (j = l; j <= h- 1; j++)
+    {
+        if (arr[j] <= x)
+        {
+            i++;
+            swap (&arr[i], &arr[j]);
+        }
+    }
+    swap (&arr[i + 1], &arr[h]);
+    return (i + 1);
+}
+ 
+
+void quickSortIterative (int arr[], int l, int h)
+{
+    // Create an auxiliary stack
+    int stack[ h - l + 1 ];
+ 
+    // initialize top of stack
+    int top = -1;
+ 
+    // push initial values of l and h to stack
+    stack[ ++top ] = l;
+    stack[ ++top ] = h;
+ 
+    // Keep popping from stack while is not empty
+    while ( top >= 0 )
+    {
+        // Pop h and l
+        h = stack[ top-- ];
+        l = stack[ top-- ];
+ 
+        // Set pivot element at its correct position
+        // in sorted array
+        int p = partition( arr, l, h );
+ 
+        // If there are elements on left side of pivot,
+        // then push left side to stack
+        if ( p-1 > l )
+        {
+            stack[ ++top ] = l;
+            stack[ ++top ] = p - 1;
+        }
+ 
+        // If there are elements on right side of pivot,
+        // then push right side to stack
+        if ( p+1 < h )
+        {
+            stack[ ++top ] = p + 1;
+            stack[ ++top ] = h;
+        }
+    }
 }
 
 
@@ -113,24 +182,24 @@ int main(int argc, char const *argv[]){
 	int *a;
 	a = (int *)malloc(SIZE * sizeof(4));
 	int tam = SIZE;
-	int *b;
-	b = (int *)malloc(SIZE * sizeof(4));		
+		
 
 	int j;
 	int i;
 	for(i = 0; i < tam; i++){
 		a[i] = rand() % 10000;
 	}
-	bubble(a, tam);
+	selectionSort(a, tam - 1);
 	clock_t end = clock();
 	arq = fopen("teste.txt", "w+");
+	double total = (double)(end - begin) / CLOCKS_PER_SEC;
+	fprintf(arq, "%.5", total);
 	for(j = 0; j < tam; j++){
 		fprintf(arq, "%d\n", a[j]);
 	}
 	fclose(arq);
 	free(a);
-	free(b);
-	double total = (double)(end - begin) / CLOCKS_PER_SEC;
+	
 	printf("%.5lf", total);
 	return 0;
 }
