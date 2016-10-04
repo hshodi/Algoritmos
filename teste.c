@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define SIZE 1000000
+#define SIZE 1000
 
 
 
@@ -57,7 +57,7 @@ static void
 intercala1 (int p, int q, int r, int v[]) 
 {
    int i, j, k, *w;                        //  1
-   w = mallocc ((r-p) * sizeof (int));     //  2
+   w = malloc ((r-p) * sizeof (int));     //  2
    i = p; j = q;                           //  3
    k = 0;                                  //  4
 
@@ -78,7 +78,7 @@ mergesort (int p, int r, int v[])
       int q = (p + r)/2;          // 2
       mergesort (p, q, v);        // 3
       mergesort (q, r, v);        // 4
-      intercala (p, q, r, v);     // 5
+      intercala1 (p, q, r, v);     // 5
    }
 }
 
@@ -119,6 +119,23 @@ int quick_part(int arr[], int l, int h)
     return (i + 1);
 }
  
+int aux (int arr[], int l, int h)
+{
+    int x = arr[h];
+    int i = (l - 1);
+ 	int j;
+    for (j = l; j <= h- 1; j++)
+    {
+        if (arr[j] <= x)
+        {
+            i++;
+            swap (&arr[i], &arr[j]);
+        }
+    }
+    swap (&arr[i + 1], &arr[h]);
+    return (i + 1);
+}
+ 
 
 void quickSortIterative (int arr[], int l, int h)
 {
@@ -141,7 +158,7 @@ void quickSortIterative (int arr[], int l, int h)
  
         // Set pivot element at its correct position
         // in sorted array
-        int p = partition( arr, l, h );
+        int p = aux( arr, l, h );
  
         // If there are elements on left side of pivot,
         // then push left side to stack
@@ -189,17 +206,17 @@ int main(int argc, char const *argv[]){
 	for(i = 0; i < tam; i++){
 		a[i] = rand() % 10000;
 	}
-	selectionSort(a, tam - 1);
+	quickSortIterative(a, 0, tam - 1);
 	clock_t end = clock();
 	arq = fopen("teste.txt", "w+");
 	double total = (double)(end - begin) / CLOCKS_PER_SEC;
-	fprintf(arq, "%.5", total);
+	fprintf(arq, "%.100lf", total);
 	for(j = 0; j < tam; j++){
 		fprintf(arq, "%d\n", a[j]);
 	}
 	fclose(arq);
 	free(a);
 	
-	printf("%.5lf", total);
+	printf("%.20lf", total);
 	return 0;
 }
