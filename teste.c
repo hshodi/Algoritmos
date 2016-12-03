@@ -7,9 +7,10 @@
 
 void swap(int *a, int *b){
 	
-	*a ^= *b;
-	*b ^= *a;
-	*a ^= *b;
+	int aux;
+	aux = a;
+	a = b;
+	b = aux;
 	
 }
 
