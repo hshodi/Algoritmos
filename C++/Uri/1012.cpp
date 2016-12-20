@@ -8,10 +8,10 @@ using namespace std;
 double power(double a, int b){
 	if(!a){
 		if(!b){
-			printf("INDETERMINACAO\n");
-		}
+			return 1;    //0 ^ 0 = 1, lim x->0 x^x = 1
+}
 		else{
-			return 1;
+			return 0;
 		}
 	}
 	if(b == 1){
