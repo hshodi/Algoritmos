@@ -21,9 +21,8 @@ int main(int argc, char *argv[]){
 
 	while(scanf("%d", &a) != EOF && scanf("%d", &b) != EOF && scanf("%d", &c) != EOF){
 		printf("%d eh o maior\n", result(a, b, c));
-
 	}
 
-
+	return 0;
 
 }
