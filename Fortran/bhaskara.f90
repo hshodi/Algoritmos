@@ -2,13 +2,10 @@ PROGRAM BHASKARA
     
     IMPLICIT NONE
 
-    REAL :: A, B, C, DELTA, X1, X2
+    REAL(16) :: A, B, C, DELTA, X1, X2
 
-    PRINT *, 'QUAL O VALOR DE A?'
     READ *, A
-    PRINT *, 'QUAL O VALOR DE B?'
     READ *, B
-    PRINT *, 'QUAL O VALOR DE C?'
     READ *, C
 
     DELTA = (B * B) - 4 * A * C
