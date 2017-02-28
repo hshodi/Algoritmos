@@ -10,7 +10,7 @@ PROGRAM SQRT_APPROACH
         GOTO 200
     END IF
 
-    IF (VALUE.LT.0) THEN
+    IF ( VALUE.LT.0 ) THEN
         WRITE (*, *) 'NAO POSSUI SOLUCAO REAL'
         GOTO 300
     END IF
@@ -18,7 +18,7 @@ PROGRAM SQRT_APPROACH
     X1 = (VALUE + (VALUE / VALUE)) / 2
     
 100 X2 = (X1 + (VALUE / X1)) / 2
-    IF (.NOT.(X1.EQ.X2)) THEN
+    IF ( .NOT.( X1.EQ.X2 ) ) THEN
         X1 = (X2 + (VALUE / X2)) / 2
         GOTO 100
     ELSE
