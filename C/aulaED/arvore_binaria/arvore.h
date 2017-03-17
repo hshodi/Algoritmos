@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-
+// ESTRUTURA BASICA DE UMA ARVORE BINARIA
 typedef struct arvorebinaria{
 
     int value;
@@ -9,6 +7,7 @@ typedef struct arvorebinaria{
 
 }Arvore;
 
+// FUNCAO PARA INSERIR UM VALOR NA ARVORE DE FORMA RECURSIVA
 void insere(Arvore **x, int val){
 
     if(*x == NULL){
@@ -30,9 +29,8 @@ void insere(Arvore **x, int val){
     printf("O elemento %d ja existe na arvore\n", val);
 }
 
+// FUNCAO PARA INSERIR UM VALOR NA ARVORE DE FORMA ITERATIVA
 void insere_iterative(Arvore **a, int val){
-
-    Arvore *first_position = *a;
 
 s2: if(*a != NULL){
         if(val > (*a)->value){
@@ -53,13 +51,14 @@ s2: if(*a != NULL){
     aux->value = val;
     *a = aux;
     printf("Elemento %d inserido com sucesso\n", (*a)->value);
-    *a = first_position;
     return;
 }
+
+// FUNCAO PARA PROCURAR UM VALOR NA ARVORE DE FORMA RECURSIVA
 void find_value(Arvore **a, int val){
 
     if(*a == NULL){
-        printf("VALOR %d NAO ESTA NA ARVORE\n", (*a)->value);
+        printf("VALOR %d NAO ESTA NA ARVORE\n", val);
         return;
     }
     if(val > (*a)->value){
@@ -76,10 +75,10 @@ void find_value(Arvore **a, int val){
     }
 }
 
+// FUNCAO PARA PROCURAR UM VALOR NA ARVORE DE FORMA ITERATIVA
 int find_value_iterative(Arvore **a, int val){
-
-    s1: if(*a != NULL){
-        printf("VALUE: %d\n", (*a)->value);
+    Arvore *first_position = *a;
+s1: if(*a != NULL){
         if((*a)->value > val){
             *a = (*a)->esquerda;
             goto s1;
@@ -90,13 +89,16 @@ int find_value_iterative(Arvore **a, int val){
         }
         if((*a)->value == val){
             printf("VALOR %d ENCONTRADO\n", (*a)->value);
+            *a = first_position;
             return 1;
         }
-    }       
-    printf("VALOR %d NAO ESTA NA ARVORE\n", (*a)->value);
+    }
+    printf("VALOR %d NAO ESTA NA ARVORE\n", val);
+    *a = first_position;
     return 0;
 }
 
+// FUNCAO PARA PRINTAR A ARVORE COM O ALGORITMO PRE-ORDEM
 void pre_order(Arvore **a){
 
     if(*a != NULL){
@@ -107,6 +109,7 @@ void pre_order(Arvore **a){
 
 }
 
+// FUNCAO PARA PRINTAR A ARVORE COM O ALGORITMO IN-ORDEM
 void in_order(Arvore **a){
 
     if(*a != NULL){
@@ -117,6 +120,7 @@ void in_order(Arvore **a){
 
 }
 
+// FUNCAO PARA PRINTAR A ARVORE COM O ALGORITMO POS-ORDEM
 void post_order(Arvore **a){
 
     if(*a != NULL){
@@ -127,20 +131,53 @@ void post_order(Arvore **a){
 
 }
 
+Arvore *twoChildren(Arvore *sub_arvore){
+    if(sub_arvore == NULL) return sub_arvore;
+    else if(sub_arvore->esquerda == NULL) return sub_arvore;
+    else return twoChildren(sub_arvore->esquerda);
+}
+
+// FUNCAO PARA REMOVER UM NÓ DA ARVORE
+void remove_node(Arvore **a, int value){
+    if((*a)->value > value) remove_node(&(*a)->esquerda, value);
+    else if((*a)->value < value) remove_node(&(*a)->direita, value);
+    else if((*a)->esquerda != NULL && (*a)->direita != NULL){
+        Arvore *aux = NULL;
+        aux = twoChildren((*a)->direita);
+        (*a)->value = aux->value;
+        remove_node(&(*a)->direita, (*a)->value);
+    }
+    else{
+        Arvore *aux = *a;
+        if((*a)->esquerda == NULL) *a = (*a)->direita;
+        else *a = (*a)->esquerda;
+        free(aux);
+    }
+}
+/*
+    >>
+    >>
+    >>      EXEMPLO DE FUNCAO MAIN
+    >>
+    >>
+    apenas retire o comentario e adicione as bibliotecas stdlib e stdio
+
 int main(int argc, char* argv[]){
 
     Arvore *a = NULL;
     insere(&a, 5);
     insere_iterative(&a, 5);
+    find_value_iterative(&a, 21);
+    find_value(&a, 5);
     insere(&a, 1);
     insere_iterative(&a, 10);
     in_order(&a);
     insere(&a, 0);
+    remove_node(&a, 10);
     insere(&a, 22);
-    find_value(&a, 5);
-    find_value_iterative(&a, 21);
     free(a);
 
 
     return 0;
 }
+*/
