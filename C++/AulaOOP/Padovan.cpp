@@ -12,6 +12,7 @@ class Calculus{
 };
 
 int Calculus::padovan(int x){
+
     switch(x){
         case 0:
             return 1;
@@ -20,17 +21,24 @@ int Calculus::padovan(int x){
         case 2:
             return 1;
         default:
-            return padovan(x - 2) + padovan(x - 3);
+            return Padovan(x - 2) + Padovan(x - 3);
     }
 
 }
 
-int prime(int x){
-    if(x % 2 == 0 && x != 2 || x == 1) return 0;
-    for(int i = x - 1; i > 1; i--){
-        if(x % i == 0) return 0;
+bool prime(int x){
+
+    if(x % 2 == 0 && x != 2 || x == 1){
+        return false;
+    }else{
+        for(int i = x - 1; i > 0; i--){
+            if(x % i == 0){
+                return false;
+            }
+        }
     }
-    return 1;
+    return true;
+
 }
 
 int main(int argc, char *agrv[]){
@@ -41,9 +49,9 @@ int main(int argc, char *agrv[]){
     for(int i = 0; counter > 0; i++){
         a.val = a.padovan(i);
         if(prime(a.val) && a.before_val != a.val){
-            printf("%d\n", a.val);
+            printf("%d", a.val);
             a.before_val = a.val;
-            counter--;
+            
         }
 
     }
