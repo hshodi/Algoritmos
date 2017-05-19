@@ -37,7 +37,7 @@ int grater(int x, int y){
     return x >= y ? x : y;
 }
 
-void RotacaoLL(No** raiz){
+void RDE(No** raiz){
 
 	No* no;
 	no = (*raiz)->esquerda;
@@ -50,7 +50,7 @@ void RotacaoLL(No** raiz){
 
 }
 
-void RotacaoRR(No** raiz){
+void RDD(No** raiz){
 
 	No* no;
 	no = (*raiz)->direita;
@@ -64,13 +64,13 @@ void RotacaoRR(No** raiz){
 }
 
 void RotacaoLR(No** raiz){
-	RotacaoRR(&(*raiz)->esquerda);
-	RotacaoLL(raiz);
+	RDD(&(*raiz)->esquerda);
+	RDE(raiz);
 }
 
 void RotacaoRL(No** raiz){
-	RotacaoLL(&(*raiz)->direita);
-	RotacaoRR(raiz);
+	RDE(&(*raiz)->direita);
+	RDD(raiz);
 }
 
 void busca(No **raiz, int val){
@@ -112,7 +112,7 @@ int insere(No **raiz, int value){
 		if((res=insere(&current->esquerda, value)) == 1){
 			if(balanceamento(current) >= 2){
 				if(value < (*raiz)->esquerda->value){
-					RotacaoLL(raiz);
+					RDE(raiz);
 				}else{
 					RotacaoLR(raiz);
 				}
@@ -123,7 +123,7 @@ int insere(No **raiz, int value){
 			if((res=insere(&current->direita, value) == 1)){
 				if(balanceamento(current) >= 2){
 					if((*raiz)->direita->value < value){
-						RotacaoRR(raiz);
+						RDD(raiz);
 					}else{
 						RotacaoRL(raiz);
 					}
@@ -157,7 +157,7 @@ int remover(No** raiz, int value){
 		if((res=remover(&(*raiz)->esquerda, value)) == 1){
 			if(balanceamento(*raiz) >= 2){
 				if(alt((*raiz)->direita->esquerda) <= alt((*raiz)->direita->direita)){
-					RotacaoRR(raiz);
+					RDD(raiz);
 				}
 				else{
 					RotacaoRL(raiz);
@@ -169,7 +169,7 @@ int remover(No** raiz, int value){
 		if((res=remover(&(*raiz)->direita, value)) == 1){
 			if(balanceamento(*raiz) >= 2){
 				if(alt((*raiz)->esquerda->direita) <= alt((*raiz)->esquerda->esquerda)){
-					RotacaoLL(raiz);
+					RDE(raiz);
 				}else{
 					RotacaoLR(raiz);
 				}
@@ -192,7 +192,7 @@ int remover(No** raiz, int value){
 			remover(&(*raiz)->direita, (*raiz)->value);
 			if(balanceamento(*raiz) >= 2){
 				if(alt((*raiz)->esquerda->direita) <= alt((*raiz)->esquerda->esquerda)){
-					RotacaoLL(raiz);
+					RDE(raiz);
 				}else{
 					RotacaoLR(raiz);
 				}
