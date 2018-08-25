@@ -19,7 +19,7 @@ void* memalloc(uint8_t size) {
     while(i < MEMORY_SIZE) {
         if (memory[i] == 0) {
             if (MEMORY_SIZE - i > size) {
-                for (register unsigned int j = i; j < MEMORY_SIZE; j++) {
+                for (register unsigned int j = i; j < (i + size); j++) {
                     if (memory[j] != 0) goto outer;
                 }
                 memory[i] = size;
@@ -61,13 +61,10 @@ int main(int argc, char **argv) {
     for (; i < MEMORY_SIZE; i++) {
         memory[i] = 0;
     }
-    Pessoa_t* a = NULL;
+    Pessoa_t* a;
     a = (Pessoa_t *) memalloc(sizeof(Pessoa_t));
-    printf("size: %ld\n", sizeof(Pessoa_t));
-    printf("endereço: %p\n", a);
     a->idade = 10;
     a->altura = 50;
-    printf("idade: %d\nAltura: %lf\n", a->idade, a->altura);
     memfree(a);
     printmem();
     return 0;
